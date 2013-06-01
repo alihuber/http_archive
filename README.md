@@ -1,4 +1,4 @@
-# HttpArchive
+# http_archive
 
 Interaction with HTTP Archives, loosely following the interface of the Archive::HAR Perl module.
 This Ruby library provides an API to HTTP Archive (.har) files. .har files are JSON-formatted files which contain data about browser interaction with a web page, such as load data, cookie data, load times and URLs of artifacts.
@@ -18,12 +18,12 @@ to use in your script:
 
 ## Usage
 
-http_archive encapulates all parts of a .har-file as an 'archive' object and fields of that object.
-To start, you crate a HttpArchive::Archive object with a String or File as parameter like so:
+http_archive encapsulates all parts of a .har-file as an 'archive' object and fields of that object.
+To start, you create an HttpArchive::Archive object with a String or File as parameter like so:
 
     archive = HttpArchive::Archive.new(File.open('/myfile.har', 'r'))
 
-The 'archive' object now holds data about the archive as attributes of that object, namely the following fields which are objects themselves:
+The 'archive' object now holds data from the archive as attributes, namely the following fields which are objects themselves:
 
 * A 'browser' object with 'name' and 'version' fields
 * A 'creator' object with 'name' and 'version' fields
@@ -39,7 +39,7 @@ To interact with that data, you query the 'archive' object. Examples:
     all_pages = archive.pages # normally just one
     puts all_pages.first.on_load # => 6745, 6.7 seconds load time
 
-The 'entry' objects hold data of the requests and responses as objects as well, with the header-data as a Hash:
+The 'entry' objects hold data of the requests and responses as objects as well, with the header data as a Hash:
 
     first_entry = archive.entries.first
     puts first_entry.request.http_method # => "GET"
@@ -49,7 +49,7 @@ The 'entry' objects hold data of the requests and responses as objects as well, 
     puts first_entry.response.status # => 200
     puts page.entry.time # => 54
 
-For more info, see the docs on each class.
+For more info, see the [docs](http://rubydoc.info/github/alihuber/http_archive/master/index) for each class.
 To summarize the data, http_archive can print out a table representation like the one you are used to from Firebug et cetera:
 
     archive.print_table
