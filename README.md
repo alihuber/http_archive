@@ -5,7 +5,7 @@ This Ruby library provides an API to HTTP Archive (.har) files. .har files are J
 
 More on HTTP Archives:   
 [Wikipedia](http://en.wikipedia.org/wiki/.har)   
-[HAR Specification](http://www.softwareishard.com/blog/har-12-spec/)   
+[HAR Specification](https://dvcs.w3.org/hg/webperf/raw-file/tip/specs/HAR/Overview.html)   
 
 ## Installation
 
