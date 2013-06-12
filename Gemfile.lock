@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    http_archive (0.0.1)
+    http_archive (0.0.2)
       json
 
 GEM

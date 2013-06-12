@@ -52,22 +52,39 @@ module HttpArchive
     # @return [String] A string table representation of the archive data
     def print_table
       puts
-      size = calc_total_size.to_s
-      load_time = (@pages.first.on_load / 1000.0).to_s
 
-      puts("Metrics for: " +"'" + @pages.first.title + "', " + @entries.size.to_s + " Requests, " + size + "MB downloaded. "  + "Load time: " + load_time + "s")
+      data = get_total_data
+      puts("Metrics for: " +"'" + data[0] + "', " + data[1] + " Requests, " + data[2] + "MB downloaded. "  + "Load time: " + data[3] + "s")
+
       puts
-
-      @entries.each do |entry|
-        print_row(entry)
-      end
+      print_rows
       puts
     end
 
 
-    private
-      def print_row(entry)
+    # Gets the common data for a page.
+    # Convenience method that can be used for bulk reading of page data.
+    # @return [Array<page_title, ressource_count, total_download_size, overall_load_time>] An array with page data
+    # @example Example of returned Array
+    #     ["Software is hard", "26", "0.36", "6.745"]
+    def get_total_data
+      size = calc_total_size.to_s
+      load_time = (@pages.first.on_load / 1000.0).to_s
+
+      [@pages.first.title, @entries.size.to_s, size, load_time]
+    end
+
+
+    # Gets the data for a row for all entries.
+    # Convenience method that can be used for bulk reading of entry data.
+    # @return [Array<Array<html_method, ressource_name, status_name, status_code, ressource_size, load_duration>>] An array with row data
+    # @example Example of returned Array
+    #     [["GET", "/prototype.js?ver=1.6.1", "200", "OK", "139.85", "1.06"], ... ]
+    def get_row_data
+      rows = []
+      @entries.each do |entry|
         method = entry.request.http_method
+        # get part after .com/ if any
         url = entry.request.url
         if url.end_with?("/")
           ressource = entry.request.url
@@ -75,13 +92,25 @@ module HttpArchive
           r = url.rindex("/")
           ressource = url[r..-1]
         end
+        # first 30 characters of the ressource name
         ressource = ressource[0, 30]
         status = entry.response.status.to_s
         code = entry.response.status_text
         size = (entry.response.content['size'] / 1000.0).round(2).to_s
         duration = (entry.time / 1000.0).to_s
 
-        puts "%s %-32s %s %-20s %-10s %s" % [method, ressource, status, code, size + " KB", duration +"s"]
+        rows << [method, ressource, status, code, size, duration]
+      end
+      rows
+    end
+
+
+    private
+      def print_rows
+        rows = get_row_data
+        rows.each do |row|
+          puts "%s %-32s %s %-20s %-10s %s" % [row[0], row[1], row[2], row[3], row[4] + " KB", row[5] +"s"]
+        end
       end
 
       def calc_total_size
