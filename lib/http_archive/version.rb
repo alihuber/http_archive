@@ -1,3 +1,4 @@
 module HttpArchive
-  VERSION = "0.0.1"
+  # Gem version
+  VERSION = "0.0.2"
 end
