@@ -1,0 +1,4 @@
+lib/http_archive.rb 7ed3c7d304cc3d8f8c873211f93c593ae1c9ebb7
+lib/http_archive/classes.rb c44a75d2c493afb2cefe196a54d6f6982724e18c
+lib/http_archive/archive.rb 0f6dbb3c88f3eff44d076d3ecaf2d9ee8803404b
+lib/http_archive/version.rb 31f1a20c203712dde733502d92814f063dad6bb0

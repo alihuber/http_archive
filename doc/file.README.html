@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.8.6.1
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h1 id='http_archive'>http_archive</h1>
+
+<p>Interaction with HTTP Archives, loosely following the interface of the Archive::HAR Perl module. This Ruby library provides an API to HTTP Archive (.har) files. .har files are JSON-formatted files which contain data about browser interaction with a web page, such as load data, cookie data, load times and URLs of artifacts.</p>
+
+<p>More on HTTP Archives: <br /><a href='http://en.wikipedia.org/wiki/.har'>Wikipedia</a> <br /><a href='http://www.softwareishard.com/blog/har-12-spec/'>HAR Specification</a></p>
+
+<h2 id='installation'>Installation</h2>
+
+<pre class="code ruby"><code class="ruby">$ gem install http_archive</code></pre>
+
+<p>to use in your script:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>http_archive</span><span class='tstring_end'>'</span></span></code></pre>
+
+<h2 id='usage'>Usage</h2>
+
+<p>http_archive encapsulates all parts of a .har-file as an &#8216;archive&#8217; object and fields of that object. To start, you create an HttpArchive::Archive object with a String or File as parameter like so:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_archive'>archive</span> <span class='op'>=</span> <span class='const'>HttpArchive</span><span class='op'>::</span><span class='const'>Archive</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_open'>open</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>/myfile.har</span><span class='tstring_end'>'</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>r</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span></code></pre>
+
+<p>The &#8216;archive&#8217; object now holds data from the archive as attributes, namely the following fields which are objects themselves:</p>
+
+<ul>
+<li>A &#8216;browser&#8217; object with &#8216;name&#8217; and &#8216;version&#8217; fields</li>
+
+<li>A &#8216;creator&#8217; object with &#8216;name&#8217; and &#8216;version&#8217; fields</li>
+
+<li>A &#8216;pages&#8217;-array with &#8216;page&#8217; objects</li>
+
+<li>An &#8216;entries&#8217;-array with &#8216;entry&#8217; objects</li>
+</ul>
+
+<p>A &#8216;page&#8217; object holds data about the page interaction as a whole: When the interaction started, page title, overall load time and so forth. An &#8216;entry&#8217; object holds information about every interaction made for that page, such as: duration, request and response data, duration, server information&#8230;</p>
+
+<p>To interact with that data, you query the &#8216;archive&#8217; object. Examples:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_archive'>archive</span><span class='period'>.</span><span class='id identifier rubyid_browser'>browser</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span> <span class='comment'># =&gt; &quot;Firefox&quot;
+</span><span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_archive'>archive</span><span class='period'>.</span><span class='id identifier rubyid_creator'>creator</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span> <span class='comment'># =&gt; &quot;Firebug&quot;
+</span><span class='id identifier rubyid_all_pages'>all_pages</span> <span class='op'>=</span> <span class='id identifier rubyid_archive'>archive</span><span class='period'>.</span><span class='id identifier rubyid_pages'>pages</span> <span class='comment'># normally just one
+</span><span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_all_pages'>all_pages</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span><span class='period'>.</span><span class='id identifier rubyid_on_load'>on_load</span> <span class='comment'># =&gt; 6745, 6.7 seconds load time</span></code></pre>
+
+<p>The &#8216;entry&#8217; objects hold data of the requests and responses as objects as well, with the header data as a Hash:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_first_entry'>first_entry</span> <span class='op'>=</span> <span class='id identifier rubyid_archive'>archive</span><span class='period'>.</span><span class='id identifier rubyid_entries'>entries</span><span class='period'>.</span><span class='id identifier rubyid_first'>first</span>
+<span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_first_entry'>first_entry</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_http_method'>http_method</span> <span class='comment'># =&gt; &quot;GET&quot;
+</span><span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_first_entry'>first_entry</span><span class='period'>.</span><span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_headers'>headers</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>Connection</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='comment'># =&gt; &quot;keep-alive&quot;
+</span><span class='comment'># More interesting stuff is here:
+</span><span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_first_entry'>first_entry</span><span class='period'>.</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_content'>content</span> <span class='comment'># =&gt; {&quot;mimeType&quot;=&gt;&quot;text/html&quot;, &quot;size&quot;=&gt;0}
+</span><span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_first_entry'>first_entry</span><span class='period'>.</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_status'>status</span> <span class='comment'># =&gt; 200
+</span><span class='id identifier rubyid_puts'>puts</span> <span class='id identifier rubyid_page'>page</span><span class='period'>.</span><span class='id identifier rubyid_entry'>entry</span><span class='period'>.</span><span class='id identifier rubyid_time'>time</span> <span class='comment'># =&gt; 54</span></code></pre>
+
+<p>For more info, see the <a href='http://rubydoc.info/github/alihuber/http_archive/master/index'>docs</a> for each class. To summarize the data, http_archive can print out a table representation like the one you are used to from Firebug et cetera:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_archive'>archive</span><span class='period'>.</span><span class='id identifier rubyid_print_table'>print_table</span></code></pre>
+
+<p>gives you this:</p>
+
+<pre class="code ruby"><code class="ruby">Metrics for: 'Software is hard', 26 Requests, 0.36MB downloaded. Load time: 6.745s
+
+GET http://www.janodvarko.cz/        302 Moved Temporarily    0.0 KB     0.054s
+GET /index.php                       301 Moved Permanently    0.0 KB     0.469s
+GET http://www.janodvarko.cz/blog/   200 OK                   52.95 KB   2.593s
+GET /l10n.js?ver=20101110            200 OK                   0.31 KB    0.065s
+GET /prototype.js?ver=1.6.1          200 OK                   139.85 KB  1.06s
+GET /wp-scriptaculous.js?ver=1.8.3   200 OK                   2.94 KB    0.136s
+GET /effects.js?ver=1.8.3            200 OK                   38.47 KB   0.665s
+GET /geshi.css                       200 OK                   1.03 KB    0.261s
+GET /lightbox.css                    200 OK                   1.42 KB    0.269s
+GET /lightbox.js                     200 OK                   23.84 KB   0.55s
+GET /rss.gif                         200 OK                   0.62 KB    1.114s
+GET /x.png                           200 OK                   1.37 KB    1.151s
+GET /useincommandline.png            200 OK                   21.55 KB   2.488s
+GET /red-text.png                    200 OK                   18.97 KB   2.778s
+GET /simple-log.png                  200 OK                   27.14 KB   3.135s
+GET /start-button.png                200 OK                   11.29 KB   2.29s
+GET /wordpress.gif                   200 OK                   0.52 KB    2.316s
+GET /creativebits.gif                200 OK                   0.34 KB    2.323s
+GET /urchin.js                       200 OK                   22.68 KB   1.476s
+GET /style.css                       200 OK                   9.24 KB    0.43s
+GET /quote.gif                       200 OK                   1.62 KB    1.716s
+GET /sidebar_top.gif                 200 OK                   0.11 KB    1.767s
+GET /sidebar_bottom.gif              200 OK                   0.11 KB    1.797s
+GET /&amp;utmac=UA-3586722-1&amp;utmcc=__u   200 OK                   0.04 KB    1.318s
+GET /loading.gif                     200 OK                   2.77 KB    0.071s
+GET /closelabel.gif                  200 OK                   0.98 KB    0.089s</code></pre>
+
+<h2 id='contributing'>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+
+<li>Commit your changes (<code>git commit -am &#39;Add some feature&#39;</code>)</li>
+
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+
+<li>Create new Pull Request</li>
+</ol></div></div>
+
+    <div id="footer">
+  Generated on Wed Jun 12 20:13:59 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.6.1 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>
