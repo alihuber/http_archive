@@ -35,6 +35,65 @@ describe HttpArchive::Archive do
     archive = HttpArchive::Archive.new(file_src)
     archive.respond_to?(:print_table).should be true
   end
+
+  it 'can get an Array of general data of a page' do
+    archive = HttpArchive::Archive.new(file_src)
+    archive.respond_to?(:get_total_data)
+  end
+
+  it 'can get an Array with Arrays with all data of all rows' do
+    archive = HttpArchive::Archive.new(file_src)
+    archive.respond_to?(:get_row_data)
+  end
+end
+
+describe 'Archive public methods' do
+  let(:file_src) {src = File.open(FixturePath.to_s + '/testfile.har', 'r')}
+  let(:archive) {HttpArchive::Archive.new(file_src)}
+
+  its 'get_total_data method returns the correct data' do
+    test_ary = ["Software is hard", "26", "0.36", "6.745"]
+    real_ary = archive.get_total_data
+    real_ary.each { |data| data.class.should be String }
+    real_ary.should == test_ary
+  end
+
+  its 'get_row_data method return the correct data' do
+    test_ary = [["GET", "http://www.janodvarko.cz/", "302", "Moved Temporarily", "0.0", "0.054"],
+    ["GET", "/index.php", "301", "Moved Permanently", "0.0", "0.469"],
+    ["GET", "http://www.janodvarko.cz/blog/", "200", "OK", "52.95", "2.593"],
+    ["GET", "/l10n.js?ver=20101110", "200", "OK", "0.31", "0.065"],
+    ["GET", "/prototype.js?ver=1.6.1", "200", "OK", "139.85", "1.06"],
+    ["GET", "/wp-scriptaculous.js?ver=1.8.3", "200", "OK", "2.94", "0.136"],
+    ["GET", "/effects.js?ver=1.8.3", "200", "OK", "38.47", "0.665"],
+    ["GET", "/geshi.css", "200", "OK", "1.03", "0.261"],
+    ["GET", "/lightbox.css", "200", "OK", "1.42", "0.269"],
+    ["GET", "/lightbox.js", "200", "OK", "23.84", "0.55"],
+    ["GET", "/rss.gif", "200", "OK", "0.62", "1.114"],
+    ["GET", "/x.png", "200", "OK", "1.37", "1.151"],
+    ["GET", "/useincommandline.png", "200", "OK", "21.55", "2.488"],
+    ["GET", "/red-text.png", "200", "OK", "18.97", "2.778"],
+    ["GET", "/simple-log.png", "200", "OK", "27.14", "3.135"],
+    ["GET", "/start-button.png", "200", "OK", "11.29", "2.29"],
+    ["GET", "/wordpress.gif", "200", "OK", "0.52", "2.316"],
+    ["GET", "/creativebits.gif", "200", "OK", "0.34", "2.323"],
+    ["GET", "/urchin.js", "200", "OK", "22.68", "1.476"],
+    ["GET", "/style.css", "200", "OK", "9.24", "0.43"],
+    ["GET", "/quote.gif", "200", "OK", "1.62", "1.716"],
+    ["GET", "/sidebar_top.gif", "200", "OK", "0.11", "1.767"],
+    ["GET", "/sidebar_bottom.gif", "200", "OK", "0.11", "1.797"],
+    ["GET", "/&utmac=UA-3586722-1&utmcc=__u", "200", "OK", "0.04", "1.318"],
+    ["GET", "/loading.gif", "200", "OK", "2.77", "0.071"],
+    ["GET", "/closelabel.gif", "200", "OK", "0.98", "0.089"]]
+
+    real_ary = archive.get_row_data
+    real_ary.class.should be Array
+    real_ary.each { |data| data.class.should be Array }
+    test_ary.each_with_index do |data, index|
+      real_ary[index].should == data
+      real_ary[index].each { |entry| entry.class.should be String }
+    end
+  end
 end
 
 
@@ -203,3 +262,4 @@ describe 'Archive interface' do
     entry_objects.first.connection.should == "80"
   end
 end
+
